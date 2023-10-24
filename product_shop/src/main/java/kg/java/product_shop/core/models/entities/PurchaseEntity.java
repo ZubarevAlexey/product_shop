@@ -1,13 +1,11 @@
 package kg.java.product_shop.core.models.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import java.util.HashSet;
+import java.util.Date;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -17,34 +15,37 @@ import java.util.Set;
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Builder(toBuilder = true)
-public class ProductEntity {
+public class PurchaseEntity {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
     private Long id;
-    private String name;
-    private Long cost;
-    @OneToMany(mappedBy= "product")
-    @JsonIgnore
-    private Set<PurchaseEntity> purchases = new HashSet<>();
+
+    @Column(name = "date_purchase")
+    private Date datePurchase;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    private ProductEntity product;
+
+    @ManyToOne
+    @JoinColumn(name = "buyer_id", referencedColumnName = "id")
+    private BuyerEntity buyer;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProductEntity product = (ProductEntity) o;
-        return Objects.equals(id, product.id) && Objects.equals(name, product.name) && Objects.equals(cost, product.cost) && Objects.equals(purchases, product.purchases);
+        PurchaseEntity purchase = (PurchaseEntity) o;
+        return Objects.equals(id, purchase.id) && Objects.equals(datePurchase, purchase.datePurchase)
+                && Objects.equals(product, purchase.product) && Objects.equals(purchase, purchase.buyer);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, cost, purchases);
-    }
+        return Objects.hash(id, datePurchase, product, buyer
 
-    @Override
-    public String toString() {
-        return name;
+        );
     }
-
 }
