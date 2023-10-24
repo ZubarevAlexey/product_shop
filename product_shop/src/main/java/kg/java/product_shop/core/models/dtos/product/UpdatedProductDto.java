@@ -1,6 +1,6 @@
 package kg.java.product_shop.core.models.dtos.product;
 
-import kg.java.shop.core.models.dtos.base.BaseDto;
+import kg.java.product_shop.core.models.dtos.base.BaseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

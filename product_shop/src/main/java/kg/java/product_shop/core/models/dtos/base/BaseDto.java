@@ -10,5 +10,5 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public abstract class BaseDto {
-    protected Long id;
+    private Long id;
 }
