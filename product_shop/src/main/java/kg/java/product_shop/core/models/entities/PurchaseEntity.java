@@ -5,8 +5,11 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Objects;
+
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Cacheable
@@ -21,4 +24,28 @@ public class PurchaseEntity {
 
     @Column(name = "date_purchase")
     private Date datePurchase;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    private ProductEntity product;
+
+    @ManyToOne
+    @JoinColumn(name = "buyer_id", referencedColumnName = "id")
+    private BuyerEntity buyer;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PurchaseEntity purchase = (PurchaseEntity) o;
+        return Objects.equals(id, purchase.id) && Objects.equals(datePurchase, purchase.datePurchase)
+                && Objects.equals(product, purchase.product) && Objects.equals(purchase, purchase.buyer);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, datePurchase, product, buyer
+
+        );
+    }
 }
